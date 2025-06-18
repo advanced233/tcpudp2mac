@@ -1,3 +1,14 @@
+error id: file://<WORKSPACE>/build.mill:`<none>`.
+file://<WORKSPACE>/build.mill
+empty definition using pc, found symbol in pc: `<none>`.
+empty definition using semanticdb
+empty definition using fallback
+non-local guesses:
+
+offset: 947
+uri: file://<WORKSPACE>/build.mill
+text:
+```scala
 // import Mill dependency
 import mill._
 import mill.define.Sources
@@ -27,7 +38,7 @@ object `tcpudp2mac` extends SbtModule { m =>
     ivy"org.chipsalliance::chisel:7.0.0-RC1",
   )
   override def scalacPluginIvyDeps = Agg(
-    ivy"org.chipsalliance:::chisel-plugin:7.0.0-RC1",
+    ivy"org.chipsalliance:::chisel-plugi@@n:7.0.0-RC1",
   )
   object test extends SbtTests with TestModule.ScalaTest {
     override def ivyDeps = m.ivyDeps() ++ Agg(
@@ -35,3 +46,10 @@ object `tcpudp2mac` extends SbtModule { m =>
     )
   }
 }
+
+```
+
+
+#### Short summary: 
+
+empty definition using pc, found symbol in pc: `<none>`.

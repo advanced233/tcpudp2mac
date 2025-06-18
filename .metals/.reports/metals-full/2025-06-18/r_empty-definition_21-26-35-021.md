@@ -1,3 +1,14 @@
+error id: file://<WORKSPACE>/src/main/scala/gcd/GCD.scala:`<none>`.
+file://<WORKSPACE>/src/main/scala/gcd/GCD.scala
+empty definition using pc, found symbol in pc: `<none>`.
+empty definition using semanticdb
+empty definition using fallback
+non-local guesses:
+
+offset: 1036
+uri: file://<WORKSPACE>/src/main/scala/gcd/GCD.scala
+text:
+```scala
 // See README.md for license details.
 
 package gcd
@@ -41,6 +52,13 @@ class GCD extends Module {
 object GCD extends App {
   ChiselStage.emitSystemVerilogFile(
     new GCD,
-    firtoolOpts = Array("-disable-all-randomization", "-strip-debug-info", "-default-layer-specialization=enable")
+    firtoolOpts = Array("-disable-all-randomization@@", "-strip-debug-info", "-default-layer-specialization=enable")
   )
 }
+
+```
+
+
+#### Short summary: 
+
+empty definition using pc, found symbol in pc: `<none>`.
