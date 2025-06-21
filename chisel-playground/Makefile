@@ -1,5 +1,5 @@
 BUILD_DIR = ./build
-VIVADO_DIR = ./tcpudp2mac-vivado
+VIVADO_DIR = /home/cao/tcpudp2mac/tcpudp2mac-vivado
 
 PRJ = playground
 
@@ -14,7 +14,7 @@ verilog:
 vivado:
 	rm -rf $(VIVADO_DIR)/sv/*
 	mill -i $(PRJ).runMain AAA --target-dir $(BUILD_DIR)
-	cp $(BUILD_DIR)/*.v $(VIVADO_DIR)/sv/
+	cp $(BUILD_DIR)/*.sv $(VIVADO_DIR)/sv/
 
 help:
 	mill -i $(PRJ).runMain Elaborate --help

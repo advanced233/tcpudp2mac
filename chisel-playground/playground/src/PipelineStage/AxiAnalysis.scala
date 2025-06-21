@@ -1,5 +1,6 @@
 import chisel3._
 import Config._
+import PreFixSum._
 
 class AxiAnalysis extends Module {
   import chisel3.util._
@@ -33,12 +34,17 @@ class AxiAnalysis extends Module {
     io.in.tready := true.B
     io.out_udp.valid := false.B
     io.out_tcp.valid := false.B
+
     when(io.in.tvalid && io.in.tready) {
-      data_reg(write_pointer) := io.in.tdata(7, 0)
-      data_reg(write_pointer + 1.U) := io.in.tdata(15, 8)
-      data_reg(write_pointer + 2.U) := io.in.tdata(23, 16)
-      data_reg(write_pointer + 3.U) := io.in.tdata(31, 24)
-      write_pointer := write_pointer + 4.U
+      val valid_cnt = PopCount(io.in.tkeep)
+      for(i <- 0 until (AXI_DATA_WIDTH / 8)) {
+        when(io.in.tkeep(i)) {
+          val byte_data = Mux(io.in.tstrb(i), io.in.tdata((i * 8 + 7), i * 8), 0.U)
+          val offset = prefixSum(io.in.tkeep, i)
+          data_reg(write_pointer + offset) := byte_data
+        }
+      }
+      write_pointer := write_pointer + valid_cnt
     }
   }
   when(state === receive) {
@@ -46,11 +52,15 @@ class AxiAnalysis extends Module {
     io.out_udp.valid := false.B
     io.out_tcp.valid := false.B
 
-    data_reg(write_pointer) := io.in.tdata(7, 0)
-    data_reg(write_pointer + 1.U) := io.in.tdata(15, 8)
-    data_reg(write_pointer + 2.U) := io.in.tdata(23, 16)
-    data_reg(write_pointer + 3.U) := io.in.tdata(31, 24)
-    write_pointer := write_pointer + 4.U
+    val valid_cnt = PopCount(io.in.tkeep)
+      for(i <- 0 until (AXI_DATA_WIDTH / 8)) {
+        when(io.in.tkeep(i)) {
+          val byte_data = Mux(io.in.tstrb(i), io.in.tdata((i * 8 + 7), i * 8), 0.U)
+          val offset = prefixSum(io.in.tkeep, i)
+          data_reg(write_pointer + offset) := byte_data
+        }
+      }
+    write_pointer := write_pointer + valid_cnt
   }
   when(state === send_udp) {
     io.in.tready := false.B
