@@ -30,30 +30,18 @@ module tb_AxiAnalysis;
   wire [15:0] io_out_tcp_bits_len;
 
   // ??? AxiAnalysis ??
-  AxiAnalysis uut (
+  Top uut (
     .clock(clock),
     .reset(reset),
-    .io_in_tvalid(io_in_tvalid),
-    .io_in_tready(io_in_tready),
-    .io_in_tdata(io_in_tdata),
-    .io_in_tkeep(io_in_tkeep),
-    .io_in_tstrb(io_in_tstrb),
-    .io_in_tlast(io_in_tlast),
-    .io_in_tid(io_in_tid),
-    .io_in_tdest(io_in_tdest),
-    .io_in_tuser(io_in_tuser),
-    .io_out_udp_ready(io_out_udp_ready),
-    .io_out_udp_valid(io_out_udp_valid),
-    .io_out_udp_bits_data(io_out_udp_bits_data),
-    .io_out_udp_bits_len(io_out_udp_bits_len),
-    .io_out_udp_bits_udp_head_src_port(io_out_udp_bits_udp_head_src_port),
-    .io_out_udp_bits_udp_head_dst_port(io_out_udp_bits_udp_head_dst_port),
-    .io_out_udp_bits_udp_head_length(io_out_udp_bits_udp_head_length),
-    .io_out_udp_bits_udp_head_checksum(io_out_udp_bits_udp_head_checksum),
-    .io_out_tcp_ready(io_out_tcp_ready),
-    .io_out_tcp_valid(io_out_tcp_valid),
-    .io_out_tcp_bits_data(io_out_tcp_bits_data),
-    .io_out_tcp_bits_len(io_out_tcp_bits_len)
+    .io_axis_tvalid(io_in_tvalid),
+    .io_axis_tready(io_in_tready),
+    .io_axis_tdata(io_in_tdata),
+    .io_axis_tkeep(io_in_tkeep),
+    .io_axis_tstrb(io_in_tstrb),
+    .io_axis_tlast(io_in_tlast),
+    .io_axis_tid(io_in_tid),
+    .io_axis_tdest(io_in_tdest),
+    .io_axis_tuser(io_in_tuser)
   );
 
   // ????

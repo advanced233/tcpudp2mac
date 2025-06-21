@@ -9,11 +9,12 @@ test:
 verilog:
 	$(call git_commit, "generate verilog")
 	mkdir -p $(BUILD_DIR)
-	mill -i $(PRJ).runMain AAA --target-dir $(BUILD_DIR)
+	mill -i $(PRJ).runMain Elaborate --target-dir $(BUILD_DIR)
 
 vivado:
+	rm -rf $(BUILD_DIR)/*
 	rm -rf $(VIVADO_DIR)/sv/*
-	mill -i $(PRJ).runMain AAA --target-dir $(BUILD_DIR)
+	mill -i $(PRJ).runMain Elaborate --target-dir $(BUILD_DIR)
 	cp $(BUILD_DIR)/*.sv $(VIVADO_DIR)/sv/
 
 help:
