@@ -62,109 +62,316 @@ module Top(	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:
   input  [3:0]   io_axis_tid,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
                  io_axis_tdest,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
                  io_axis_tuser,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-  output [511:0] io_out_data,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-  output [15:0]  io_out_len,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_udp_head_src_port,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_udp_head_dst_port,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_udp_head_length,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_udp_head_checksum,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_tcp_head_src_port,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_tcp_head_dst_port,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-  output [31:0]  io_out_tcp_head_seq_num,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_tcp_head_ack_num,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-  output [3:0]   io_out_tcp_head_head_length,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_tcp_head_reserved,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-  output         io_out_tcp_head_cwr,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_tcp_head_ece,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_tcp_head_urg,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_tcp_head_ack,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_tcp_head_psh,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_tcp_head_rst,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_tcp_head_syn,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_tcp_head_fin,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-  output [15:0]  io_out_tcp_head_window_size,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_tcp_head_checksum,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_tcp_head_urgent_pointer,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-  output [3:0]   io_out_ip_head_version,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_ip_head_ihl,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-  output [5:0]   io_out_ip_head_dscp,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-  output [1:0]   io_out_ip_head_ecn,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-  output [15:0]  io_out_ip_head_total_length,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_ip_head_identification,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-  output [2:0]   io_out_ip_head_flags,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-  output [12:0]  io_out_ip_head_fragment_offset,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-  output [7:0]   io_out_ip_head_ttl,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_ip_head_protocol,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-  output [15:0]  io_out_ip_head_header_checksum,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-  output [31:0]  io_out_ip_head_src_ip,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_ip_head_dst_ip,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-  output [55:0]  io_out_mac_head_preamble,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-  output [7:0]   io_out_mac_head_sfd,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-  output [47:0]  io_out_mac_head_dst_mac,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-                 io_out_mac_head_src_mac,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-  output [15:0]  io_out_mac_head_ethertype,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
-  output [31:0]  io_out_mac_tail_crc_check	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [511:0] io_out1_data,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [15:0]  io_out1_len,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_udp_head_src_port,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_udp_head_dst_port,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_udp_head_length,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_udp_head_checksum,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_tcp_head_src_port,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_tcp_head_dst_port,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [31:0]  io_out1_tcp_head_seq_num,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_tcp_head_ack_num,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [3:0]   io_out1_tcp_head_head_length,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_tcp_head_reserved,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output         io_out1_tcp_head_cwr,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_tcp_head_ece,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_tcp_head_urg,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_tcp_head_ack,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_tcp_head_psh,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_tcp_head_rst,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_tcp_head_syn,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_tcp_head_fin,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [15:0]  io_out1_tcp_head_window_size,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_tcp_head_checksum,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_tcp_head_urgent_pointer,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [3:0]   io_out1_ip_head_version,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_ip_head_ihl,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [5:0]   io_out1_ip_head_dscp,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [1:0]   io_out1_ip_head_ecn,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [15:0]  io_out1_ip_head_total_length,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_ip_head_identification,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [2:0]   io_out1_ip_head_flags,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [12:0]  io_out1_ip_head_fragment_offset,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [7:0]   io_out1_ip_head_ttl,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_ip_head_protocol,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [15:0]  io_out1_ip_head_header_checksum,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [31:0]  io_out1_ip_head_src_ip,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_ip_head_dst_ip,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [55:0]  io_out1_mac_head_preamble,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [7:0]   io_out1_mac_head_sfd,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [47:0]  io_out1_mac_head_dst_mac,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out1_mac_head_src_mac,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [15:0]  io_out1_mac_head_ethertype,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [31:0]  io_out1_mac_tail_crc_check,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [511:0] io_out2_data,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [15:0]  io_out2_len,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_udp_head_src_port,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_udp_head_dst_port,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_udp_head_length,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_udp_head_checksum,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_tcp_head_src_port,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_tcp_head_dst_port,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [31:0]  io_out2_tcp_head_seq_num,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_tcp_head_ack_num,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [3:0]   io_out2_tcp_head_head_length,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_tcp_head_reserved,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output         io_out2_tcp_head_cwr,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_tcp_head_ece,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_tcp_head_urg,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_tcp_head_ack,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_tcp_head_psh,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_tcp_head_rst,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_tcp_head_syn,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_tcp_head_fin,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [15:0]  io_out2_tcp_head_window_size,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_tcp_head_checksum,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_tcp_head_urgent_pointer,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [3:0]   io_out2_ip_head_version,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_ip_head_ihl,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [5:0]   io_out2_ip_head_dscp,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [1:0]   io_out2_ip_head_ecn,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [15:0]  io_out2_ip_head_total_length,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_ip_head_identification,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [2:0]   io_out2_ip_head_flags,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [12:0]  io_out2_ip_head_fragment_offset,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [7:0]   io_out2_ip_head_ttl,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_ip_head_protocol,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [15:0]  io_out2_ip_head_header_checksum,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [31:0]  io_out2_ip_head_src_ip,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_ip_head_dst_ip,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [55:0]  io_out2_mac_head_preamble,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [7:0]   io_out2_mac_head_sfd,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [47:0]  io_out2_mac_head_dst_mac,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+                 io_out2_mac_head_src_mac,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [15:0]  io_out2_mac_head_ethertype,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
+  output [31:0]  io_out2_mac_tail_crc_check	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:6:14]
 );
 
-  wire         _udp_io_in_ready;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:13:19]
-  wire         _udp_io_out_valid;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:13:19]
-  wire         _axi_analysis_io_out_udp_valid;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:11:28]
-  wire [511:0] _axi_analysis_io_out_udp_bits_data;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:11:28]
-  wire [15:0]  _axi_analysis_io_out_udp_bits_len;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:11:28]
+  wire         _check_sum_io_in_ready;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:18:25]
+  wire         _tcp_io_in_ready;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:16:19]
+  wire         _tcp_io_out_valid;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:16:19]
+  wire [511:0] _tcp_io_out_bits_data;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:16:19]
+  wire [15:0]  _tcp_io_out_bits_len;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:16:19]
+  wire [15:0]  _tcp_io_out_bits_tcp_head_src_port;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:16:19]
+  wire [15:0]  _tcp_io_out_bits_tcp_head_dst_port;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:16:19]
+  wire [31:0]  _tcp_io_out_bits_tcp_head_seq_num;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:16:19]
+  wire         _udp_io_in_ready;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:14:19]
+  wire         _udp_io_out_valid;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:14:19]
+  wire         _axi_analysis_io_out_udp_valid;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:12:28]
+  wire [511:0] _axi_analysis_io_out_udp_bits_data;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:12:28]
+  wire [15:0]  _axi_analysis_io_out_udp_bits_len;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:12:28]
+  wire         _axi_analysis_io_out_tcp_valid;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:12:28]
+  wire [511:0] _axi_analysis_io_out_tcp_bits_data;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:12:28]
+  wire [15:0]  _axi_analysis_io_out_tcp_bits_len;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:12:28]
   reg          valid;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24]
   reg  [511:0] udp_io_in_bits_r_data;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
   reg  [15:0]  udp_io_in_bits_r_len;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
-  wire         _udp_io_in_bits_T = _axi_analysis_io_out_udp_valid & _udp_io_in_ready;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:11:28, :13:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:8:22]
+  reg          valid_1;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24]
+  reg  [511:0] tcp_io_in_bits_r_data;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [15:0]  tcp_io_in_bits_r_len;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg          valid_2;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24]
+  reg  [511:0] check_sum_io_in_bits_r_data;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [15:0]  check_sum_io_in_bits_r_len;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [15:0]  check_sum_io_in_bits_r_udp_head_src_port;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [15:0]  check_sum_io_in_bits_r_udp_head_dst_port;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [15:0]  check_sum_io_in_bits_r_udp_head_length;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [15:0]  check_sum_io_in_bits_r_udp_head_checksum;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [15:0]  check_sum_io_in_bits_r_tcp_head_src_port;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [15:0]  check_sum_io_in_bits_r_tcp_head_dst_port;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [31:0]  check_sum_io_in_bits_r_tcp_head_seq_num;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [3:0]   check_sum_io_in_bits_r_ip_head_version;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [3:0]   check_sum_io_in_bits_r_ip_head_ihl;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [5:0]   check_sum_io_in_bits_r_ip_head_dscp;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [1:0]   check_sum_io_in_bits_r_ip_head_ecn;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [15:0]  check_sum_io_in_bits_r_ip_head_total_length;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [15:0]  check_sum_io_in_bits_r_ip_head_identification;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [2:0]   check_sum_io_in_bits_r_ip_head_flags;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [12:0]  check_sum_io_in_bits_r_ip_head_fragment_offset;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [7:0]   check_sum_io_in_bits_r_ip_head_ttl;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [7:0]   check_sum_io_in_bits_r_ip_head_protocol;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [15:0]  check_sum_io_in_bits_r_ip_head_header_checksum;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [31:0]  check_sum_io_in_bits_r_ip_head_src_ip;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [31:0]  check_sum_io_in_bits_r_ip_head_dst_ip;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [55:0]  check_sum_io_in_bits_r_mac_head_preamble;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [7:0]   check_sum_io_in_bits_r_mac_head_sfd;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [47:0]  check_sum_io_in_bits_r_mac_head_dst_mac;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [47:0]  check_sum_io_in_bits_r_mac_head_src_mac;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [15:0]  check_sum_io_in_bits_r_mac_head_ethertype;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  reg  [31:0]  check_sum_io_in_bits_r_mac_tail_crc_check;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+  wire         _udp_io_in_bits_T = _axi_analysis_io_out_udp_valid & _udp_io_in_ready;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:12:28, :14:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:8:22]
+  wire         _tcp_io_in_bits_T = _axi_analysis_io_out_tcp_valid & _tcp_io_in_ready;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:12:28, :16:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:8:22]
+  wire         _check_sum_io_in_bits_T = _tcp_io_out_valid & _check_sum_io_in_ready;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:16:19, :18:25, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:8:22]
   always @(posedge clock) begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7]
-    if (reset)	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7]
-      valid <= 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24]
-    else	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7]
-      valid <= _udp_io_in_bits_T | ~_udp_io_out_valid & valid;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:13:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24, :7:{25,33}, :8:{22,38,46}]
+    if (reset) begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7]
+      valid <= 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :18:25, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24]
+      valid_1 <= 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :18:25, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24]
+      valid_2 <= 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :18:25, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24]
+    end
+    else begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7]
+      valid <= _udp_io_in_bits_T | ~_udp_io_out_valid & valid;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:14:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24, :7:{25,33}, :8:{22,38,46}]
+      valid_1 <=
+        _tcp_io_in_bits_T | ~(_check_sum_io_in_ready & _tcp_io_out_valid) & valid_1;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:16:19, :18:25, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24, :7:{25,33}, :8:{22,38,46}, src/main/scala/chisel3/util/Decoupled.scala:51:35]
+      valid_2 <= _check_sum_io_in_bits_T | valid_2;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24, :7:25, :8:{22,38,46}]
+    end
     if (_udp_io_in_bits_T) begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:8:22]
-      udp_io_in_bits_r_data <= _axi_analysis_io_out_udp_bits_data;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:11:28, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
-      udp_io_in_bits_r_len <= _axi_analysis_io_out_udp_bits_len;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:11:28, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      udp_io_in_bits_r_data <= _axi_analysis_io_out_udp_bits_data;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:12:28, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      udp_io_in_bits_r_len <= _axi_analysis_io_out_udp_bits_len;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:12:28, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    end
+    if (_tcp_io_in_bits_T) begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:8:22]
+      tcp_io_in_bits_r_data <= _axi_analysis_io_out_tcp_bits_data;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:12:28, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      tcp_io_in_bits_r_len <= _axi_analysis_io_out_tcp_bits_len;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:12:28, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    end
+    if (_check_sum_io_in_bits_T) begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:8:22]
+      check_sum_io_in_bits_r_data <= _tcp_io_out_bits_data;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:16:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_len <= _tcp_io_out_bits_len;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:16:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_udp_head_src_port <= 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_udp_head_dst_port <= 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_udp_head_length <= 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_udp_head_checksum <= 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_tcp_head_src_port <= _tcp_io_out_bits_tcp_head_src_port;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:16:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_tcp_head_dst_port <= _tcp_io_out_bits_tcp_head_dst_port;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:16:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_tcp_head_seq_num <= _tcp_io_out_bits_tcp_head_seq_num;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:16:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_ip_head_version <= 4'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_ip_head_ihl <= 4'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_ip_head_dscp <= 6'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_ip_head_ecn <= 2'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_ip_head_total_length <= 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_ip_head_identification <= 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_ip_head_flags <= 3'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_ip_head_fragment_offset <= 13'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_ip_head_ttl <= 8'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_ip_head_protocol <= 8'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_ip_head_header_checksum <= 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_ip_head_src_ip <= 32'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_ip_head_dst_ip <= 32'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_mac_head_preamble <= 56'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_mac_head_sfd <= 8'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_mac_head_dst_mac <= 48'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_mac_head_src_mac <= 48'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_mac_head_ethertype <= 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+      check_sum_io_in_bits_r_mac_tail_crc_check <= 32'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
     end
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7]
     `ifdef FIRRTL_BEFORE_INITIAL	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7]
       `FIRRTL_BEFORE_INITIAL	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7]
     `endif // FIRRTL_BEFORE_INITIAL
-    logic [31:0] _RANDOM[0:16];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7]
+    logic [31:0] _RANDOM[0:105];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7]
     initial begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7]
       `ifdef INIT_RANDOM_PROLOG_	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7]
         `INIT_RANDOM_PROLOG_	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7]
       `endif // INIT_RANDOM_PROLOG_
       `ifdef RANDOMIZE_REG_INIT	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7]
-        for (logic [4:0] i = 5'h0; i < 5'h11; i += 5'h1) begin
+        for (logic [6:0] i = 7'h0; i < 7'h6A; i += 7'h1) begin
           _RANDOM[i] = `RANDOM;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7]
         end	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7]
-        valid = _RANDOM[5'h0][0];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24]
+        valid = _RANDOM[7'h0][0];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24]
         udp_io_in_bits_r_data =
-          {_RANDOM[5'h0][31:1],
-           _RANDOM[5'h1],
-           _RANDOM[5'h2],
-           _RANDOM[5'h3],
-           _RANDOM[5'h4],
-           _RANDOM[5'h5],
-           _RANDOM[5'h6],
-           _RANDOM[5'h7],
-           _RANDOM[5'h8],
-           _RANDOM[5'h9],
-           _RANDOM[5'hA],
-           _RANDOM[5'hB],
-           _RANDOM[5'hC],
-           _RANDOM[5'hD],
-           _RANDOM[5'hE],
-           _RANDOM[5'hF],
-           _RANDOM[5'h10][0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24, :12:28]
-        udp_io_in_bits_r_len = _RANDOM[5'h10][16:1];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+          {_RANDOM[7'h0][31:1],
+           _RANDOM[7'h1],
+           _RANDOM[7'h2],
+           _RANDOM[7'h3],
+           _RANDOM[7'h4],
+           _RANDOM[7'h5],
+           _RANDOM[7'h6],
+           _RANDOM[7'h7],
+           _RANDOM[7'h8],
+           _RANDOM[7'h9],
+           _RANDOM[7'hA],
+           _RANDOM[7'hB],
+           _RANDOM[7'hC],
+           _RANDOM[7'hD],
+           _RANDOM[7'hE],
+           _RANDOM[7'hF],
+           _RANDOM[7'h10][0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24, :12:28]
+        udp_io_in_bits_r_len = _RANDOM[7'h10][16:1];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        valid_1 = _RANDOM[7'h23][1];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24]
+        tcp_io_in_bits_r_data =
+          {_RANDOM[7'h23][31:2],
+           _RANDOM[7'h24],
+           _RANDOM[7'h25],
+           _RANDOM[7'h26],
+           _RANDOM[7'h27],
+           _RANDOM[7'h28],
+           _RANDOM[7'h29],
+           _RANDOM[7'h2A],
+           _RANDOM[7'h2B],
+           _RANDOM[7'h2C],
+           _RANDOM[7'h2D],
+           _RANDOM[7'h2E],
+           _RANDOM[7'h2F],
+           _RANDOM[7'h30],
+           _RANDOM[7'h31],
+           _RANDOM[7'h32],
+           _RANDOM[7'h33][1:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24, :12:28]
+        tcp_io_in_bits_r_len = _RANDOM[7'h33][17:2];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        valid_2 = _RANDOM[7'h46][2];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24]
+        check_sum_io_in_bits_r_data =
+          {_RANDOM[7'h46][31:3],
+           _RANDOM[7'h47],
+           _RANDOM[7'h48],
+           _RANDOM[7'h49],
+           _RANDOM[7'h4A],
+           _RANDOM[7'h4B],
+           _RANDOM[7'h4C],
+           _RANDOM[7'h4D],
+           _RANDOM[7'h4E],
+           _RANDOM[7'h4F],
+           _RANDOM[7'h50],
+           _RANDOM[7'h51],
+           _RANDOM[7'h52],
+           _RANDOM[7'h53],
+           _RANDOM[7'h54],
+           _RANDOM[7'h55],
+           _RANDOM[7'h56][2:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24, :12:28]
+        check_sum_io_in_bits_r_len = _RANDOM[7'h56][18:3];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_udp_head_src_port =
+          {_RANDOM[7'h56][31:19], _RANDOM[7'h57][2:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_udp_head_dst_port = _RANDOM[7'h57][18:3];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_udp_head_length =
+          {_RANDOM[7'h57][31:19], _RANDOM[7'h58][2:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_udp_head_checksum = _RANDOM[7'h58][18:3];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_tcp_head_src_port =
+          {_RANDOM[7'h58][31:19], _RANDOM[7'h59][2:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_tcp_head_dst_port = _RANDOM[7'h59][18:3];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_tcp_head_seq_num =
+          {_RANDOM[7'h59][31:19], _RANDOM[7'h5A][18:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_ip_head_version = _RANDOM[7'h5D][22:19];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_ip_head_ihl = _RANDOM[7'h5D][26:23];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_ip_head_dscp = {_RANDOM[7'h5D][31:27], _RANDOM[7'h5E][0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_ip_head_ecn = _RANDOM[7'h5E][2:1];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_ip_head_total_length = _RANDOM[7'h5E][18:3];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_ip_head_identification =
+          {_RANDOM[7'h5E][31:19], _RANDOM[7'h5F][2:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_ip_head_flags = _RANDOM[7'h5F][5:3];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_ip_head_fragment_offset = _RANDOM[7'h5F][18:6];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_ip_head_ttl = _RANDOM[7'h5F][26:19];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_ip_head_protocol =
+          {_RANDOM[7'h5F][31:27], _RANDOM[7'h60][2:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_ip_head_header_checksum = _RANDOM[7'h60][18:3];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_ip_head_src_ip =
+          {_RANDOM[7'h60][31:19], _RANDOM[7'h61][18:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_ip_head_dst_ip =
+          {_RANDOM[7'h61][31:19], _RANDOM[7'h62][18:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_mac_head_preamble =
+          {_RANDOM[7'h62][31:19], _RANDOM[7'h63], _RANDOM[7'h64][10:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_mac_head_sfd = _RANDOM[7'h64][18:11];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_mac_head_dst_mac =
+          {_RANDOM[7'h64][31:19], _RANDOM[7'h65], _RANDOM[7'h66][2:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_mac_head_src_mac =
+          {_RANDOM[7'h66][31:3], _RANDOM[7'h67][18:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_mac_head_ethertype =
+          {_RANDOM[7'h67][31:19], _RANDOM[7'h68][2:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+        check_sum_io_in_bits_r_mac_tail_crc_check =
+          {_RANDOM[7'h68][31:3], _RANDOM[7'h69][2:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7]
       `FIRRTL_AFTER_INITIAL	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7]
     `endif // FIRRTL_AFTER_INITIAL
   `endif // ENABLE_INITIAL_REG_
-  AxiAnalysis axi_analysis (	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:11:28]
+  AxiAnalysis axi_analysis (	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:12:28]
     .clock                (clock),
     .reset                (reset),
     .io_in_tvalid         (io_axis_tvalid),
@@ -173,12 +380,16 @@ module Top(	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:
     .io_in_tkeep          (io_axis_tkeep),
     .io_in_tstrb          (io_axis_tstrb),
     .io_in_tlast          (io_axis_tlast),
-    .io_out_udp_ready     (_udp_io_in_ready),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:13:19]
+    .io_out_udp_ready     (_udp_io_in_ready),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:14:19]
     .io_out_udp_valid     (_axi_analysis_io_out_udp_valid),
     .io_out_udp_bits_data (_axi_analysis_io_out_udp_bits_data),
-    .io_out_udp_bits_len  (_axi_analysis_io_out_udp_bits_len)
+    .io_out_udp_bits_len  (_axi_analysis_io_out_udp_bits_len),
+    .io_out_tcp_ready     (_tcp_io_in_ready),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:16:19]
+    .io_out_tcp_valid     (_axi_analysis_io_out_tcp_valid),
+    .io_out_tcp_bits_data (_axi_analysis_io_out_tcp_bits_data),
+    .io_out_tcp_bits_len  (_axi_analysis_io_out_tcp_bits_len)
   );
-  Udp udp (	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:13:19]
+  Udp udp (	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:14:19]
     .clock                         (clock),
     .reset                         (reset),
     .io_in_ready                   (_udp_io_in_ready),
@@ -186,48 +397,139 @@ module Top(	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:
     .io_in_bits_data               (udp_io_in_bits_r_data),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
     .io_in_bits_len                (udp_io_in_bits_r_len),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
     .io_out_valid                  (_udp_io_out_valid),
-    .io_out_bits_data              (io_out_data),
-    .io_out_bits_len               (io_out_len),
-    .io_out_bits_udp_head_src_port (io_out_udp_head_src_port),
-    .io_out_bits_udp_head_dst_port (io_out_udp_head_dst_port),
-    .io_out_bits_udp_head_length   (io_out_udp_head_length)
+    .io_out_bits_data              (io_out1_data),
+    .io_out_bits_len               (io_out1_len),
+    .io_out_bits_udp_head_src_port (io_out1_udp_head_src_port),
+    .io_out_bits_udp_head_dst_port (io_out1_udp_head_dst_port),
+    .io_out_bits_udp_head_length   (io_out1_udp_head_length)
   );
-  assign io_out_udp_head_checksum = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_tcp_head_src_port = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_tcp_head_dst_port = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_tcp_head_seq_num = 32'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_tcp_head_ack_num = 32'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_tcp_head_head_length = 4'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_tcp_head_reserved = 4'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_tcp_head_cwr = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_tcp_head_ece = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_tcp_head_urg = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_tcp_head_ack = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_tcp_head_psh = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_tcp_head_rst = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_tcp_head_syn = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_tcp_head_fin = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_tcp_head_window_size = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_tcp_head_checksum = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_tcp_head_urgent_pointer = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_ip_head_version = 4'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_ip_head_ihl = 4'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_ip_head_dscp = 6'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_ip_head_ecn = 2'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_ip_head_total_length = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_ip_head_identification = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_ip_head_flags = 3'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_ip_head_fragment_offset = 13'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_ip_head_ttl = 8'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_ip_head_protocol = 8'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_ip_head_header_checksum = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_ip_head_src_ip = 32'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_ip_head_dst_ip = 32'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_mac_head_preamble = 56'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_mac_head_sfd = 8'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_mac_head_dst_mac = 48'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_mac_head_src_mac = 48'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_mac_head_ethertype = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
-  assign io_out_mac_tail_crc_check = 32'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :13:19]
+  Tcp tcp (	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:16:19]
+    .clock                         (clock),
+    .reset                         (reset),
+    .io_in_ready                   (_tcp_io_in_ready),
+    .io_in_valid                   (valid_1),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24]
+    .io_in_bits_data               (tcp_io_in_bits_r_data),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_len                (tcp_io_in_bits_r_len),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_out_ready                  (_check_sum_io_in_ready),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:18:25]
+    .io_out_valid                  (_tcp_io_out_valid),
+    .io_out_bits_data              (_tcp_io_out_bits_data),
+    .io_out_bits_len               (_tcp_io_out_bits_len),
+    .io_out_bits_tcp_head_src_port (_tcp_io_out_bits_tcp_head_src_port),
+    .io_out_bits_tcp_head_dst_port (_tcp_io_out_bits_tcp_head_dst_port),
+    .io_out_bits_tcp_head_seq_num  (_tcp_io_out_bits_tcp_head_seq_num)
+  );
+  CheckSum check_sum (	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:18:25]
+    .clock                               (clock),
+    .reset                               (reset),
+    .io_in_ready                         (_check_sum_io_in_ready),
+    .io_in_valid                         (valid_2),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24]
+    .io_in_bits_data                     (check_sum_io_in_bits_r_data),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_len                      (check_sum_io_in_bits_r_len),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_udp_head_src_port        (check_sum_io_in_bits_r_udp_head_src_port),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_udp_head_dst_port        (check_sum_io_in_bits_r_udp_head_dst_port),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_udp_head_length          (check_sum_io_in_bits_r_udp_head_length),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_udp_head_checksum        (check_sum_io_in_bits_r_udp_head_checksum),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_tcp_head_src_port        (check_sum_io_in_bits_r_tcp_head_src_port),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_tcp_head_dst_port        (check_sum_io_in_bits_r_tcp_head_dst_port),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_tcp_head_seq_num         (check_sum_io_in_bits_r_tcp_head_seq_num),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_ip_head_version          (check_sum_io_in_bits_r_ip_head_version),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_ip_head_ihl              (check_sum_io_in_bits_r_ip_head_ihl),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_ip_head_dscp             (check_sum_io_in_bits_r_ip_head_dscp),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_ip_head_ecn              (check_sum_io_in_bits_r_ip_head_ecn),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_ip_head_total_length     (check_sum_io_in_bits_r_ip_head_total_length),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_ip_head_identification   (check_sum_io_in_bits_r_ip_head_identification),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_ip_head_flags            (check_sum_io_in_bits_r_ip_head_flags),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_ip_head_fragment_offset  (check_sum_io_in_bits_r_ip_head_fragment_offset),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_ip_head_ttl              (check_sum_io_in_bits_r_ip_head_ttl),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_ip_head_protocol         (check_sum_io_in_bits_r_ip_head_protocol),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_ip_head_header_checksum  (check_sum_io_in_bits_r_ip_head_header_checksum),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_ip_head_src_ip           (check_sum_io_in_bits_r_ip_head_src_ip),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_ip_head_dst_ip           (check_sum_io_in_bits_r_ip_head_dst_ip),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_mac_head_preamble        (check_sum_io_in_bits_r_mac_head_preamble),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_mac_head_sfd             (check_sum_io_in_bits_r_mac_head_sfd),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_mac_head_dst_mac         (check_sum_io_in_bits_r_mac_head_dst_mac),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_mac_head_src_mac         (check_sum_io_in_bits_r_mac_head_src_mac),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_mac_head_ethertype       (check_sum_io_in_bits_r_mac_head_ethertype),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_in_bits_mac_tail_crc_check       (check_sum_io_in_bits_r_mac_tail_crc_check),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_out_bits_data                    (io_out2_data),
+    .io_out_bits_len                     (io_out2_len),
+    .io_out_bits_udp_head_src_port       (io_out2_udp_head_src_port),
+    .io_out_bits_udp_head_dst_port       (io_out2_udp_head_dst_port),
+    .io_out_bits_udp_head_length         (io_out2_udp_head_length),
+    .io_out_bits_udp_head_checksum       (io_out2_udp_head_checksum),
+    .io_out_bits_tcp_head_src_port       (io_out2_tcp_head_src_port),
+    .io_out_bits_tcp_head_dst_port       (io_out2_tcp_head_dst_port),
+    .io_out_bits_tcp_head_seq_num        (io_out2_tcp_head_seq_num),
+    .io_out_bits_tcp_head_checksum       (io_out2_tcp_head_checksum),
+    .io_out_bits_ip_head_version         (io_out2_ip_head_version),
+    .io_out_bits_ip_head_ihl             (io_out2_ip_head_ihl),
+    .io_out_bits_ip_head_dscp            (io_out2_ip_head_dscp),
+    .io_out_bits_ip_head_ecn             (io_out2_ip_head_ecn),
+    .io_out_bits_ip_head_total_length    (io_out2_ip_head_total_length),
+    .io_out_bits_ip_head_identification  (io_out2_ip_head_identification),
+    .io_out_bits_ip_head_flags           (io_out2_ip_head_flags),
+    .io_out_bits_ip_head_fragment_offset (io_out2_ip_head_fragment_offset),
+    .io_out_bits_ip_head_ttl             (io_out2_ip_head_ttl),
+    .io_out_bits_ip_head_protocol        (io_out2_ip_head_protocol),
+    .io_out_bits_ip_head_header_checksum (io_out2_ip_head_header_checksum),
+    .io_out_bits_ip_head_src_ip          (io_out2_ip_head_src_ip),
+    .io_out_bits_ip_head_dst_ip          (io_out2_ip_head_dst_ip),
+    .io_out_bits_mac_head_preamble       (io_out2_mac_head_preamble),
+    .io_out_bits_mac_head_sfd            (io_out2_mac_head_sfd),
+    .io_out_bits_mac_head_dst_mac        (io_out2_mac_head_dst_mac),
+    .io_out_bits_mac_head_src_mac        (io_out2_mac_head_src_mac),
+    .io_out_bits_mac_head_ethertype      (io_out2_mac_head_ethertype),
+    .io_out_bits_mac_tail_crc_check      (io_out2_mac_tail_crc_check)
+  );
+  assign io_out1_udp_head_checksum = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out1_tcp_head_src_port = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out1_tcp_head_dst_port = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out1_tcp_head_seq_num = 32'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out1_tcp_head_ack_num = 32'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out1_tcp_head_head_length = 4'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out1_tcp_head_reserved = 4'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out1_tcp_head_cwr = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :18:25]
+  assign io_out1_tcp_head_ece = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :18:25]
+  assign io_out1_tcp_head_urg = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :18:25]
+  assign io_out1_tcp_head_ack = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :18:25]
+  assign io_out1_tcp_head_psh = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :18:25]
+  assign io_out1_tcp_head_rst = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :18:25]
+  assign io_out1_tcp_head_syn = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :18:25]
+  assign io_out1_tcp_head_fin = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :18:25]
+  assign io_out1_tcp_head_window_size = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out1_tcp_head_checksum = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out1_tcp_head_urgent_pointer = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out1_ip_head_version = 4'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out1_ip_head_ihl = 4'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out1_ip_head_dscp = 6'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19]
+  assign io_out1_ip_head_ecn = 2'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19]
+  assign io_out1_ip_head_total_length = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out1_ip_head_identification = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out1_ip_head_flags = 3'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19]
+  assign io_out1_ip_head_fragment_offset = 13'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19]
+  assign io_out1_ip_head_ttl = 8'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19]
+  assign io_out1_ip_head_protocol = 8'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19]
+  assign io_out1_ip_head_header_checksum = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out1_ip_head_src_ip = 32'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out1_ip_head_dst_ip = 32'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out1_mac_head_preamble = 56'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19]
+  assign io_out1_mac_head_sfd = 8'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19]
+  assign io_out1_mac_head_dst_mac = 48'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19]
+  assign io_out1_mac_head_src_mac = 48'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19]
+  assign io_out1_mac_head_ethertype = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out1_mac_tail_crc_check = 32'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out2_tcp_head_ack_num = 32'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out2_tcp_head_head_length = 4'h5;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :18:25]
+  assign io_out2_tcp_head_reserved = 4'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out2_tcp_head_cwr = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :18:25]
+  assign io_out2_tcp_head_ece = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :18:25]
+  assign io_out2_tcp_head_urg = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :18:25]
+  assign io_out2_tcp_head_ack = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :18:25]
+  assign io_out2_tcp_head_psh = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :18:25]
+  assign io_out2_tcp_head_rst = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :18:25]
+  assign io_out2_tcp_head_syn = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :18:25]
+  assign io_out2_tcp_head_fin = 1'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :18:25]
+  assign io_out2_tcp_head_window_size = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
+  assign io_out2_tcp_head_urgent_pointer = 16'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:5:7, :14:19, :16:19, :18:25]
 endmodule
 
