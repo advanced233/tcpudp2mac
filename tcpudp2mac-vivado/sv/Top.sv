@@ -149,6 +149,7 @@ module Top(	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:
 );
 
   wire         _check_sum_io_in_ready;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:18:25]
+  wire         _check_sum_io_out_valid;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:18:25]
   wire         _tcp_io_in_ready;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:16:19]
   wire         _tcp_io_out_valid;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:16:19]
   wire [511:0] _tcp_io_out_bits_data;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:16:19]
@@ -212,7 +213,7 @@ module Top(	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:
       valid <= _udp_io_in_bits_T | ~_udp_io_out_valid & valid;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:14:19, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24, :7:{25,33}, :8:{22,38,46}]
       valid_1 <=
         _tcp_io_in_bits_T | ~(_check_sum_io_in_ready & _tcp_io_out_valid) & valid_1;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:16:19, :18:25, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24, :7:{25,33}, :8:{22,38,46}, src/main/scala/chisel3/util/Decoupled.scala:51:35]
-      valid_2 <= _check_sum_io_in_bits_T | valid_2;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24, :7:25, :8:{22,38,46}]
+      valid_2 <= _check_sum_io_in_bits_T | ~_check_sum_io_out_valid & valid_2;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:18:25, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:6:24, :7:{25,33}, :8:{22,38,46}]
     end
     if (_udp_io_in_bits_T) begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:8:22]
       udp_io_in_bits_r_data <= _axi_analysis_io_out_udp_bits_data;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:12:28, home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
@@ -451,6 +452,7 @@ module Top(	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Top.scala:
     .io_in_bits_mac_head_src_mac         (check_sum_io_in_bits_r_mac_head_src_mac),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
     .io_in_bits_mac_head_ethertype       (check_sum_io_in_bits_r_mac_head_ethertype),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
     .io_in_bits_mac_tail_crc_check       (check_sum_io_in_bits_r_mac_tail_crc_check),	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/utils/PipelineConnect.scala:12:28]
+    .io_out_valid                        (_check_sum_io_out_valid),
     .io_out_bits_data                    (io_out2_data),
     .io_out_bits_len                     (io_out2_len),
     .io_out_bits_udp_head_src_port       (io_out2_udp_head_src_port),

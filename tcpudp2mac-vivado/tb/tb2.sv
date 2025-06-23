@@ -58,13 +58,13 @@ module tb_AxiAnalysis;
       io_in_tlast <= 0;  // ??? tlast ? 0
     end else begin
       clk_count <= clk_count + 1;  // ????????????
-      if (clk_count == 10) begin
+      if (clk_count == 3) begin
         io_in_tlast <= 1;  // ?? 10 ???????? tlast ? 1
       end
       else begin
         io_in_tlast <= 0;
       end
-      if(clk_count == 11) begin
+      if(clk_count == 4) begin
         io_in_tvalid <= 0;
       end
     end
@@ -76,7 +76,7 @@ module tb_AxiAnalysis;
     clock = 0;
     reset = 0;
     io_in_tvalid = 0;
-    io_in_tdata = 32'h12345678;
+    io_in_tdata = 32'h82345678;
     io_in_tkeep = 4'b1101;
     io_in_tstrb = 4'b1001;
     io_in_tlast = 0;

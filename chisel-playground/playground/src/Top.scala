@@ -21,7 +21,7 @@ class Top extends Module {
   io.out1 := udp.io.out.bits
   io.out2 := check_sum.io.out.bits
   udp.io.out.ready := true.B
-  check_sum.io.out.ready := false.B // Not used in this example
+  check_sum.io.out.ready := true.B 
 
   PipelineConnect(axi_analysis.io.out_udp, udp.io.in, udp.io.out.fire, false.B)
   PipelineConnect(axi_analysis.io.out_tcp, tcp.io.in, tcp.io.out.fire, false.B)

@@ -1,63 +1,87 @@
 import chisel3._
-import Config._
 import chisel3.util._
+import Config._
 
 class CheckSum extends Module {
   val io = IO(new Bundle {
-    val in = Flipped(Decoupled(new PipelineConnectIO))
+    val in  = Flipped(Decoupled(new PipelineConnectIO))
     val out = Decoupled(new PipelineConnectIO)
   })
 
   io.out.bits := io.in.bits
-  io.in.ready := false.B
+  io.in.ready  := false.B
   io.out.valid := false.B
 
-  val latched_reg = Reg(UInt(((MAX_DATA_WIDTH + 20 + 12 + 1) * 8).W))
-  val latched_length = RegInit(0.U(17.W)) // 20 bytes for TCP header + 12 bytes for pseudo header + data length
+  val header_reg      = Reg(UInt(((12 + 20) * 8).W))
+  val payload_reg     = Reg(UInt((MAX_DATA_WIDTH * 8).W))
+  val header_words    = Reg(UInt(9.W))   // 单位为16b
+  val payload_words   = Reg(UInt(9.W))   // 单位为16b
+  val running_sum     = RegInit(0.U(17.W))
 
-  val running_sum = RegInit(0.U(17.W))
-  // state machine
-  val idle :: calc :: done :: Nil = Enum(3)
+  val debug_header_reg = header_reg(255, 0)
+  val debug_payload_reg = payload_reg(255, 0)
+  dontTouch(debug_header_reg)
+  dontTouch(debug_payload_reg)
+
+  val idle :: calc_header :: calc_payload :: done :: Nil = Enum(4)
   val state = RegInit(idle)
 
   state := MuxLookup(state, idle)(Seq(
-    idle -> Mux(io.in.valid, calc, idle),
-    calc -> Mux(latched_length === 0.U, done, calc),
-    done -> Mux(io.out.fire, idle, done)
+    idle         -> Mux(io.in.valid, calc_header, idle),
+    calc_header  -> Mux(header_words === 0.U, calc_payload, calc_header),
+    calc_payload -> Mux(payload_words === 0.U, done, calc_payload),
+    done         -> Mux(io.out.fire, idle, done)
   ))
 
   switch(state) {
     is(idle) {
-      io.out.valid := false.B
       io.in.ready := true.B
       when(io.in.valid) {
         io.in.ready := false.B
-        val tmp_latched_length = io.in.bits.len + 20.U(16.W) + 12.U(16.W)
-
-        // 不知道ip地址，设为0,后续补充
-        val pseudo = Cat(0.U(32.W), 0.U(32.W), 0.U(8.W), 6.U(8.W), io.in.bits.len + 20.U)
+        val pseudo = Cat(
+          0.U(32.W),         // src IP
+          0.U(32.W),         // dst IP
+          0.U(8.W),          // zero
+          6.U(8.W),          // protocol = TCP
+          io.in.bits.len + 20.U(16.W)  // TCP length = header(20) + data
+        )
         val tcp_hdr = io.in.bits.tcp_head.asUInt
-        val payload = Mux(io.in.bits.len % 2.U === 0.U, 
-                          io.in.bits.data, Cat(io.in.bits.data, 0.U(8.W)))
 
-        latched_reg := Cat(pseudo, tcp_hdr, payload)
-        latched_length := Mux(tmp_latched_length % 2.U === 0.U, 
-                                  tmp_latched_length, 
-                                  tmp_latched_length + 1.U)
+        header_reg   := Cat(pseudo, tcp_hdr)
+        header_words := ((12 + 20) * 8 / 16).U
+
+        val byte_len    = io.in.bits.len
+        val padded_data = Mux(byte_len(0) === 1.U,
+                             Cat(io.in.bits.data, 0.U(8.W)),
+                             io.in.bits.data)
+        payload_reg   := padded_data
+        payload_words := ((byte_len + 1.U) >> 1) // upper 16 位字数
+
         running_sum := 0.U
       }
     }
-    is(calc) {
-      when(latched_length =/= 0.U) {
-        val next_sum = Wire(UInt(17.W))
-        next_sum := running_sum +& latched_reg(15, 0)
-        running_sum := next_sum(16) +& Cat(0.U(1.W), next_sum(15, 0))
-        latched_length := latched_length - 2.U
-        latched_reg := latched_reg >> 16
+
+    is(calc_header) {
+      when(header_words =/= 0.U) {
+        val next = running_sum +& header_reg(15, 0)
+        running_sum := next +& next(16)
+        header_reg   := header_reg >> 16
+        header_words := header_words - 1.U
       }
     }
+
+    is(calc_payload) {
+      when(payload_words =/= 0.U) {
+        val next = running_sum +& payload_reg(15, 0)
+        running_sum := next +& next(16)
+        payload_reg   := payload_reg >> 16
+        payload_words := payload_words - 1.U
+      }
+    }
+
     is(done) {
-      io.out.bits.tcp_head.checksum := ~(running_sum(15, 0))
+      val final_sum = (running_sum & 0xFFFF.U) +& (running_sum >> 16)
+      io.out.bits.tcp_head.checksum := ~final_sum(15, 0)
       io.out.valid := true.B
     }
   }

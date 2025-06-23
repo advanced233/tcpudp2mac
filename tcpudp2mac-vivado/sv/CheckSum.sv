@@ -83,6 +83,7 @@ module CheckSum(	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Pipel
                  io_in_bits_mac_head_src_mac,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:6:14]
   input  [15:0]  io_in_bits_mac_head_ethertype,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:6:14]
   input  [31:0]  io_in_bits_mac_tail_crc_check,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:6:14]
+  output         io_out_valid,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:6:14]
   output [511:0] io_out_bits_data,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:6:14]
   output [15:0]  io_out_bits_len,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:6:14]
                  io_out_bits_udp_head_src_port,	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:6:14]
@@ -114,58 +115,81 @@ module CheckSum(	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Pipel
   output [31:0]  io_out_bits_mac_tail_crc_check	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:6:14]
 );
 
-  reg  [775:0] latched_reg;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:15:24]
-  reg  [16:0]  latched_length;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:16:31]
-  reg  [16:0]  running_sum;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:18:28]
-  reg  [1:0]   state;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:21:22]
-  wire         _state_T_5 = state == 2'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:21:22, :23:34]
-  wire         _state_T_7 = state == 2'h1;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:21:22, :23:34, :24:16]
-  wire         _state_T_9 = state == 2'h2;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:21:22, :23:34, :26:16]
-  wire [15:0]  _payload_T = io_in_bits_len % 16'h2;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:40:42]
-  wire [15:0]  _tmp_latched_length_T_2 = io_in_bits_len + 16'h20;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:35:62]
-  wire [15:0]  _latched_length_T = _tmp_latched_length_T_2 % 16'h2;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:35:62, :40:42, :44:50]
-  wire [16:0]  _next_sum_T_1 = running_sum + {1'h0, latched_reg[15:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:12:15, :15:24, :18:28, :53:{33,47}]
-  wire         _GEN = _state_T_7 & (|latched_length);	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:16:31, :18:28, :23:34, :25:32, :29:17, :51:36, :54:21]
+  wire         io_out_valid_0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:14:16, :40:17]
+  reg  [255:0] header_reg;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:17:28]
+  wire [255:0] debug_header_reg = header_reg;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:17:28, :23:36]
+  reg  [511:0] payload_reg;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:18:28]
+  reg  [8:0]   header_words;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:19:28]
+  reg  [8:0]   payload_words;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:20:28]
+  reg  [16:0]  running_sum;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:21:32]
+  wire [255:0] debug_payload_reg = payload_reg[255:0];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:18:28, :24:38]
+  reg  [1:0]   state;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:30:22]
+  wire         _state_T_7 = state == 2'h1;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:30:22, :33:34, :34:24]
+  wire         _state_T_9 = state == 2'h2;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:30:22, :33:34, :35:24]
+  reg  [1:0]   casez_tmp;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:33:34]
+  always_comb begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:33:34]
+    casez (state)	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:30:22, :33:34]
+      2'b00:
+        casez_tmp = {1'h0, io_in_valid};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:13:16, :33:34, :34:24]
+      2'b01:
+        casez_tmp = (|header_words) ? 2'h1 : 2'h2;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:19:28, :33:34, :34:24, :35:{24,38}]
+      2'b10:
+        casez_tmp = {1'h1, ~(|payload_words)};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:6:14, :20:28, :33:34, :36:{24,39}]
+      default:
+        casez_tmp = io_out_valid_0 ? 2'h0 : 2'h3;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:14:16, :30:22, :33:34, :36:24, :37:24, :40:17]
+    endcase	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:30:22, :33:34]
+  end // always_comb
+  wire         _GEN = state == 2'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:30:22, :40:17]
+  wire         _GEN_0 = _GEN | _state_T_7 | _state_T_9;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:12:15, :33:34, :40:17]
+  assign io_out_valid_0 = ~_GEN_0 & (&state);	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:12:15, :14:16, :30:22, :33:34, :40:17]
+  wire [9:0]   _payload_words_T = io_in_bits_len[9:0] + 10'h1;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:52:26, :66:37, :83:38]
+  wire [16:0]  next = running_sum + {1'h0, header_reg[15:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:13:16, :17:28, :21:32, :78:{32,45}]
+  wire [16:0]  next_1 = running_sum + {1'h0, payload_reg[15:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:13:16, :18:28, :21:32, :90:{32,46}]
+  wire         _GEN_1 = _state_T_9 & (|payload_words);	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:20:28, :21:32, :33:34, :36:39, :40:17, :89:35, :91:21]
   always @(posedge clock) begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7]
-    if (_state_T_5) begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:23:34]
-      if (io_in_valid)	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:6:14]
-        latched_reg <=
+    if (_GEN) begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:40:17]
+      if (io_in_valid) begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:6:14]
+        header_reg <=
           {80'h6,
            io_in_bits_len + 16'h14,
            io_in_bits_tcp_head_src_port,
            io_in_bits_tcp_head_dst_port,
            io_in_bits_tcp_head_seq_num,
-           96'h5000000000000000,
-           _payload_T[1:0] == 2'h0 ? {8'h0, io_in_bits_data} : {io_in_bits_data, 8'h0}};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:15:24, :21:22, :35:49, :38:{25,83}, :39:43, :40:{26,42,48}, :41:47, :43:27]
+           96'h5000000000000000};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:17:28, :47:25, :52:26, :54:43, :57:28]
+        payload_reg <=
+          io_in_bits_len[0] ? {io_in_bits_data[503:0], 8'h0} : io_in_bits_data;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:18:28, :47:25, :62:{30,39}, :63:33]
+        header_words <= 9'h10;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:19:28, :58:22]
+        payload_words <= _payload_words_T[9:1];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:20:28, :66:{23,37,44}]
+      end
     end
-    else if (_GEN)	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:18:28, :29:17, :51:36, :54:21]
-      latched_reg <= {16'h0, latched_reg[775:16]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:6:14, :15:24, :56:{21,36}]
+    else begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:40:17]
+      if (_state_T_7 & (|header_words)) begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:17:28, :19:28, :33:34, :35:38, :40:17, :77:34, :82:22]
+        header_reg <= {16'h0, header_reg[255:16]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:6:14, :17:28, :82:{22,36}]
+        header_words <= header_words - 9'h1;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:19:28, :83:38]
+      end
+      if (_state_T_7 | ~_GEN_1) begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:18:28, :20:28, :21:32, :33:34, :40:17, :89:35, :91:21]
+      end
+      else begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:20:28, :40:17]
+        payload_reg <= {16'h0, payload_reg[511:16]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:6:14, :18:28, :92:{23,38}]
+        payload_words <= payload_words - 9'h1;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:20:28, :93:40]
+      end
+    end
     if (reset) begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7]
-      latched_length <= 17'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:16:31]
-      running_sum <= 17'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:16:31, :18:28]
-      state <= 2'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:21:22]
+      running_sum <= 17'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:21:32]
+      state <= 2'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:30:22]
     end
     else begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7]
-      if (_state_T_5) begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:23:34]
-        if (io_in_valid) begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:6:14]
-          latched_length <=
-            {1'h0,
-             _latched_length_T[1:0] == 2'h0
-               ? _tmp_latched_length_T_2
-               : io_in_bits_len + 16'h21};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:12:15, :16:31, :21:22, :35:62, :44:{24,30,50,56}, :46:54]
-          running_sum <= 17'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:16:31, :18:28]
-        end
+      if (_GEN) begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:40:17]
+        if (io_in_valid)	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:6:14]
+          running_sum <= 17'h0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:21:32]
       end
-      else if (_GEN) begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:18:28, :29:17, :51:36, :54:21]
-        latched_length <= latched_length - 17'h2;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:16:31, :55:42]
-        running_sum <= {16'h0, _next_sum_T_1[16]} + {1'h0, _next_sum_T_1[15:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:6:14, :12:15, :18:28, :53:33, :54:{32,37,62}]
+      else if (_state_T_7) begin	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:33:34]
+        if (|header_words)	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:19:28, :35:38]
+          running_sum <= next + {16'h0, next[16]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:6:14, :21:32, :78:32, :80:{29,36}]
       end
-      if (_state_T_9)	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:23:34]
-        state <= 2'h2;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:21:22, :26:16]
-      else if (_state_T_7)	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:23:34]
-        state <= (|latched_length) ? 2'h1 : 2'h2;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:16:31, :21:22, :24:16, :25:{16,32}, :26:16]
-      else	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:23:34]
-        state <= {1'h0, _state_T_5 & io_in_valid};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:12:15, :21:22, :23:34, :24:16]
+      else if (_GEN_1)	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:21:32, :40:17, :89:35, :91:21]
+        running_sum <= next_1 + {16'h0, next_1[16]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:6:14, :21:32, :90:32, :91:{29,36}]
+      state <= casez_tmp;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:30:22, :33:34]
     end
   end // always @(posedge)
   `ifdef ENABLE_INITIAL_REG_	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7]
@@ -181,7 +205,7 @@ module CheckSum(	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Pipel
         for (logic [4:0] i = 5'h0; i < 5'h1A; i += 5'h1) begin
           _RANDOM[i] = `RANDOM;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7]
         end	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7]
-        latched_reg =
+        header_reg =
           {_RANDOM[5'h0],
            _RANDOM[5'h1],
            _RANDOM[5'h2],
@@ -189,8 +213,9 @@ module CheckSum(	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Pipel
            _RANDOM[5'h4],
            _RANDOM[5'h5],
            _RANDOM[5'h6],
-           _RANDOM[5'h7],
-           _RANDOM[5'h8],
+           _RANDOM[5'h7]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7, :17:28]
+        payload_reg =
+          {_RANDOM[5'h8],
            _RANDOM[5'h9],
            _RANDOM[5'hA],
            _RANDOM[5'hB],
@@ -205,18 +230,19 @@ module CheckSum(	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Pipel
            _RANDOM[5'h14],
            _RANDOM[5'h15],
            _RANDOM[5'h16],
-           _RANDOM[5'h17],
-           _RANDOM[5'h18][7:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7, :15:24]
-        latched_length = _RANDOM[5'h18][24:8];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7, :15:24, :16:31]
-        running_sum = {_RANDOM[5'h18][31:25], _RANDOM[5'h19][9:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7, :15:24, :18:28]
-        state = _RANDOM[5'h19][11:10];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7, :18:28, :21:22]
+           _RANDOM[5'h17]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7, :18:28]
+        header_words = _RANDOM[5'h18][8:0];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7, :19:28]
+        payload_words = _RANDOM[5'h18][17:9];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7, :19:28, :20:28]
+        running_sum = {_RANDOM[5'h18][31:18], _RANDOM[5'h19][2:0]};	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7, :19:28, :21:32]
+        state = _RANDOM[5'h19][4:3];	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7, :21:32, :30:22]
       `endif // RANDOMIZE_REG_INIT
     end // initial
     `ifdef FIRRTL_AFTER_INITIAL	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7]
       `FIRRTL_AFTER_INITIAL	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7]
     `endif // FIRRTL_AFTER_INITIAL
   `endif // ENABLE_INITIAL_REG_
-  assign io_in_ready = _state_T_5 & ~io_in_valid;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7, :12:15, :23:34, :29:17, :32:19, :33:25, :34:21]
+  assign io_in_ready = _GEN & ~io_in_valid;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7, :13:16, :40:17, :42:19, :43:25, :44:21]
+  assign io_out_valid = io_out_valid_0;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7, :14:16, :40:17]
   assign io_out_bits_data = io_in_bits_data;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7]
   assign io_out_bits_len = io_in_bits_len;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7]
   assign io_out_bits_udp_head_src_port = io_in_bits_udp_head_src_port;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7]
@@ -227,7 +253,7 @@ module CheckSum(	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/Pipel
   assign io_out_bits_tcp_head_dst_port = io_in_bits_tcp_head_dst_port;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7]
   assign io_out_bits_tcp_head_seq_num = io_in_bits_tcp_head_seq_num;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7]
   assign io_out_bits_tcp_head_checksum =
-    _state_T_5 | _state_T_7 | ~_state_T_9 ? 16'h0 : ~(running_sum[15:0]);	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7, :6:14, :11:15, :18:28, :23:34, :29:17, :60:{40,53}]
+    _GEN_0 | ~(&state) ? 16'h0 : ~(running_sum[15:0] + {15'h0, running_sum[16]});	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7, :6:14, :12:15, :21:32, :30:22, :33:34, :40:17, :99:{36,48,64}, :100:40]
   assign io_out_bits_ip_head_version = io_in_bits_ip_head_version;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7]
   assign io_out_bits_ip_head_ihl = io_in_bits_ip_head_ihl;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7]
   assign io_out_bits_ip_head_dscp = io_in_bits_ip_head_dscp;	// @[home/cao/tcpudp2mac/chisel-playground/playground/src/PipelineStage/CalcCheckSum.scala:5:7]
